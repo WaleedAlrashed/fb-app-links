@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Redirect</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const desktopRedirectURL = "https://www.ksecret.com/en/some-by-mi-aha-bha-pha-30-days-miracle-toner";
+            const appCustomURL = "ksecret://ksecret.com/en/product/267";
+            const fallbackAppStoreURLAndroid = "https://play.google.com/store/apps/details?id=co.tapcart.app.id_zcmOjKFIkS&hl=en";
+            const fallbackAppStoreURLiOS = "https://apps.apple.com/us/app/k-secret/id1472249735";
+
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+            function isAndroid() {
+                return /android/i.test(userAgent);
+            }
+
+            function isIOS() {
+                return /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+            }
+
+            function isDesktop() {
+                return !isAndroid() && !isIOS();
+            }
+
+            if (isDesktop()) {
+                // Redirect desktop users
+                window.location.href = desktopRedirectURL;
+            } else if (isAndroid()) {
+                // Try to open the Android app
+                window.location = appCustomURL;
+                setTimeout(() => {
+                    // If the app isn't installed, redirect to the Play Store
+                    window.location.href = fallbackAppStoreURLAndroid;
+                }, 2000);
+            } else if (isIOS()) {
+                // Try to open the iOS app
+                window.location = appCustomURL;
+                setTimeout(() => {
+                    // If the app isn't installed, redirect to the App Store
+                    window.location.href = fallbackAppStoreURLiOS;
+                }, 2000);
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Redirecting...</h1>
+</body>
+</html>
